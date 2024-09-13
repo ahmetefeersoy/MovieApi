@@ -5,12 +5,11 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
-COPY WebAPI/api/*.csproj ./api/
-WORKDIR /app/api
+COPY *.csproj ./
 RUN dotnet restore
 
 # Copy everything else and build
-COPY WebAPI/api/. ./
+COPY . ./
 RUN dotnet build -c Release -o out
 
 # Publish the application
