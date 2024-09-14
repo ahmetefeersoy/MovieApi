@@ -358,7 +358,7 @@ namespace api.Controllers
 
         private async Task SendEmailAsync(string email, string subject, string message)
         {
-            var apiKey = "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"
+            var apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");
             var client = new SendGridClient(apiKey);
             var from = new EmailAddress("iletisimwatchhub@gmail.com", "WatchHub");
             var to = new EmailAddress(email);

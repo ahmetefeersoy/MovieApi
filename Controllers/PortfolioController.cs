@@ -64,7 +64,7 @@ namespace api.Controllers
         }
 
         [HttpDelete]
-        [Authorize]
+        // [Authorize]
 
         public async Task<IActionResult> DeletePorfolio([FromRoute]string name){
             var username = User.GetUsername();
