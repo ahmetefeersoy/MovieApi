@@ -66,7 +66,7 @@ namespace api.Controllers
         [HttpDelete]
         [Authorize]
 
-        public async Task<IActionResult> DeletePorfolio([FromBody]string name){
+        public async Task<IActionResult> DeletePorfolio([FromRoute]string name){
             var username = User.GetUsername();
             var appUser = await _userManager.FindByNameAsync(username);
 
