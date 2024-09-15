@@ -263,6 +263,7 @@ namespace api.Controllers
             user.FirstName = updateUserProfileDto.FirstName;
             user.LastName = updateUserProfileDto.LastName;
             user.Country = updateUserProfileDto.Country;
+            user.ProfilImageUrl = updateUserProfileDto.ProfilImageUrl;
 
             var updateResult = await _userManager.UpdateAsync(user);
 
