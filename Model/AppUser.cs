@@ -17,6 +17,7 @@ namespace api.Model
         public string ActivationCode { get; set; } = String.Empty;
 
         public string VerificationCode { get; set; } = String.Empty;
+        public string ProfilImageUrl { get; set; } = String.Empty;
 
 
     }
