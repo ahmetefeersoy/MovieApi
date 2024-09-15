@@ -235,52 +235,75 @@ namespace api.Controllers
                 }
             );
         }
-        [HttpGet("user/{username}")]
-        [Authorize]
-        public async Task<IActionResult> GetUser(string username)
-        {
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == username.ToLower());
-            if (user == null) return NotFound("User not found");
+[HttpGet("user/{username}")]
+[Authorize]
+public async Task<IActionResult> GetUser(string username)
+{
+    var user = await _userManager.Users
+                .Where(x => x.UserName == username.ToLower())
+                .Select(u => new
+                {
+                    u.UserName,
+                    u.Email,
+                    FirstName = u.FirstName ?? string.Empty, // Null kontrolü
+                    LastName = u.LastName ?? string.Empty,   // Null kontrolü
+                    Country = u.Country ?? string.Empty,     // Null kontrolü
+                    ProfilImageUrl = u.ProfilImageUrl ?? string.Empty // Null kontrolü
+                })
+                .FirstOrDefaultAsync();
 
-            return Ok(new
-            {
-                user.UserName,
-                user.Email,
-                user.FirstName,
-                user.LastName,
-                user.Country
-            });
-        }
+    if (user == null) return NotFound("User not found");
+
+    return Ok(user);
+}
+
+
 
         [HttpPost("update-user-profile")]
-        [Authorize]
-        public async Task<IActionResult> UpdateUserProfile([FromForm] UpdateUserDto updateUserProfileDto)
-        {
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == updateUserProfileDto.Username.ToLower());
-            if (user == null) return Unauthorized("User not found");
+[Authorize]
+public async Task<IActionResult> UpdateUserProfile([FromForm] UpdateUserDto updateUserProfileDto)
+{
+    var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == updateUserProfileDto.Username.ToLower());
+    if (user == null) return Unauthorized("User not found");
 
-            // Kullanıcı bilgilerini güncelle
-            user.FirstName = updateUserProfileDto.FirstName;
-            user.LastName = updateUserProfileDto.LastName;
-            user.Country = updateUserProfileDto.Country;
-            user.ProfilImageUrl = updateUserProfileDto.ProfilImageUrl;
+    // Null gelen değerler mevcut değerlerin üzerine yazılmamalıdır.
+    if (!string.IsNullOrEmpty(updateUserProfileDto.FirstName))
+    {
+        user.FirstName = updateUserProfileDto.FirstName;
+    }
 
-            var updateResult = await _userManager.UpdateAsync(user);
+    if (!string.IsNullOrEmpty(updateUserProfileDto.LastName))
+    {
+        user.LastName = updateUserProfileDto.LastName;
+    }
 
-            if (!updateResult.Succeeded)
-            {
-                return StatusCode(500, updateResult.Errors);
-            }
+    if (!string.IsNullOrEmpty(updateUserProfileDto.Country))
+    {
+        user.Country = updateUserProfileDto.Country;
+    }
 
-            return Ok(new
-            {
-                user.UserName,
-                user.Email,
-                user.FirstName,
-                user.LastName,
-                user.Country
-            });
-        }
+    if (!string.IsNullOrEmpty(updateUserProfileDto.ProfilImageUrl))
+    {
+        user.ProfilImageUrl = updateUserProfileDto.ProfilImageUrl;
+    }
+
+    var updateResult = await _userManager.UpdateAsync(user);
+
+    if (!updateResult.Succeeded)
+    {
+        return StatusCode(500, updateResult.Errors);
+    }
+
+    return Ok(new
+    {
+        user.UserName,
+        user.Email,
+        user.FirstName,
+        user.LastName,
+        user.Country,
+        user.ProfilImageUrl,
+    });
+}
 
         [HttpPost("report-and-contact")]
         public async Task<IActionResult> ReportAndContact([FromBody] ReportAndContactDto dto)

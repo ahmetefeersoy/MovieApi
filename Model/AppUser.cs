@@ -19,8 +19,6 @@ namespace api.Model
         public string VerificationCode { get; set; } = String.Empty;
         public string ProfilImageUrl { get; set; } = String.Empty;
 
-        public string ProfilImageUrl { get; set; } = String.Empty;
-
 
     }
 }
