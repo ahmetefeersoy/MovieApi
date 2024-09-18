@@ -118,6 +118,21 @@ namespace api.Controllers
 
             return Ok(comment.ToCommentDto());
         }
+
+          [HttpPost("{id:int}/dislike")]
+        public async Task<IActionResult> DislikeComment([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var comment = await _commentRepo.UpdateDislikesAsync(id);
+            if (comment == null)
+            {
+                return NotFound("Comment not found");
+            }
+
+            return Ok(comment.ToCommentDto());
+        }
     }
 
 

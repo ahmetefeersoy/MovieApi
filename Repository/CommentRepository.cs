@@ -76,5 +76,17 @@ namespace api.Repository
         }
         return comment;
     }
+
+       public async Task<Comment> UpdateDislikesAsync(int commentId)
+    {
+        var comment = await _context.Comments.FindAsync(commentId);
+        if (comment != null)
+        {
+            comment.NumberOfLikes--;
+            _context.Comments.Update(comment);
+            await _context.SaveChangesAsync();
+        }
+        return comment;
+    }
     }
 }
