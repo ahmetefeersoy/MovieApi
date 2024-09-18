@@ -105,6 +105,8 @@ builder.Services.AddScoped<IFilmRepository, FilmRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IPortfolioRepository, PortfolioRepository>();
+builder.Services.AddScoped<ICommentLikePortfolioRepository, CommentLikePortfolioRepository>();
+
 
 
 var app = builder.Build();

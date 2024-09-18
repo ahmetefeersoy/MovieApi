@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240915182959_AppUserUrl")]
-    partial class AppUserUrl
+    [Migration("20240918113352_InıtCreate")]
+    partial class InıtCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,13 +54,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3a9f9d5f-1d74-4c4b-b51f-a3504eb874fa",
+                            Id = "d5963cd7-1a31-490e-a032-848014120c97",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "9fea9f91-26e6-4ca6-894e-e681c933ef45",
+                            Id = "833624b0-3d7f-437d-8fb6-ba3b1fecfb95",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -283,6 +283,9 @@ namespace api.Migrations
                     b.Property<int?>("FilmId")
                         .HasColumnType("int");
 
+                    b.Property<int>("NumberOfLikes")
+                        .HasColumnType("int");
+
                     b.Property<int>("StarRating")
                         .HasColumnType("int");
 
@@ -293,6 +296,21 @@ namespace api.Migrations
                     b.HasIndex("FilmId");
 
                     b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("api.Model.CommentLikePortfolio", b =>
+                {
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AppUserId", "CommentId");
+
+                    b.HasIndex("CommentId");
+
+                    b.ToTable("CommentLikePortfolio");
                 });
 
             modelBuilder.Entity("api.Model.Films", b =>
@@ -431,6 +449,25 @@ namespace api.Migrations
                     b.Navigation("Film");
                 });
 
+            modelBuilder.Entity("api.Model.CommentLikePortfolio", b =>
+                {
+                    b.HasOne("api.Model.AppUser", "AppUser")
+                        .WithMany("CommentLikePortfolios")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("api.Model.Comment", "Comment")
+                        .WithMany("CommentLikePortfolios")
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Comment");
+                });
+
             modelBuilder.Entity("api.Model.Portfolio", b =>
                 {
                     b.HasOne("api.Model.AppUser", "AppUser")
@@ -452,7 +489,14 @@ namespace api.Migrations
 
             modelBuilder.Entity("api.Model.AppUser", b =>
                 {
+                    b.Navigation("CommentLikePortfolios");
+
                     b.Navigation("Portfolios");
+                });
+
+            modelBuilder.Entity("api.Model.Comment", b =>
+                {
+                    b.Navigation("CommentLikePortfolios");
                 });
 
             modelBuilder.Entity("api.Model.Films", b =>

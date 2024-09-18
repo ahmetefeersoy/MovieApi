@@ -30,7 +30,7 @@ namespace api.Controllers
         [HttpGet]
         public async Task<ActionResult> GetAll()
         {
-            if (!ModelState.IsValid)
+if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var comments = await _commentRepo.GetAllAsync();
@@ -56,7 +56,7 @@ namespace api.Controllers
         [HttpPost("{filmId:int}")]
         public async Task<IActionResult> Create([FromRoute] int filmId, CreateCommentDto commentDto)
         {
-            if (!ModelState.IsValid)
+if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             if (!await _filmRepo.FilmExists(filmId))
@@ -85,7 +85,7 @@ namespace api.Controllers
             {
                 return NotFound("Comment does not exist");
             }
-
+            
             return Ok(commentModel);
         }
 
@@ -93,7 +93,7 @@ namespace api.Controllers
         [Route("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCommentDto updateDto)
         {
-            if (!ModelState.IsValid)
+if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var comment = await _commentRepo.UpdateAsync(id, updateDto.ToCommentFromUpdate());
@@ -104,35 +104,6 @@ namespace api.Controllers
             return Ok(comment.ToCommentDto());
         }
 
-        [HttpPost("{id:int}/like")]
-        public async Task<IActionResult> LikeComment([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var comment = await _commentRepo.UpdateLikesAsync(id);
-            if (comment == null)
-            {
-                return NotFound("Comment not found");
-            }
-
-            return Ok(comment.ToCommentDto());
-        }
-
-          [HttpPost("{id:int}/dislike")]
-        public async Task<IActionResult> DislikeComment([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var comment = await _commentRepo.UpdateDislikesAsync(id);
-            if (comment == null)
-            {
-                return NotFound("Comment not found");
-            }
-
-            return Ok(comment.ToCommentDto());
-        }
     }
 
 

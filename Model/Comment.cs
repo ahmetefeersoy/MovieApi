@@ -23,6 +23,8 @@ namespace api.Model
         public Films? Film { get; set; } 
         public string AppUserId { get; set; }   
         public AppUser AppUser { get; set; }
+        public List<CommentLikePortfolio> CommentLikePortfolios { get; set; } = new List<CommentLikePortfolio>();
+
 
         
         }
