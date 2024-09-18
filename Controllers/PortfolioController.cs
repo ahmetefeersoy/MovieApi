@@ -66,7 +66,7 @@ namespace api.Controllers
         [HttpDelete]
         // [Authorize]
 
-        public async Task<IActionResult> DeletePorfolio([FromRoute]string name){
+        public async Task<IActionResult> DeletePorfolio(string name){
             var username = User.GetUsername();
             var appUser = await _userManager.FindByNameAsync(username);
 
@@ -76,6 +76,7 @@ namespace api.Controllers
 
             if(filteredFilms.Count()==1){
                 await _portfolioRepo.DeletePorfolio(appUser,name);
+                return StatusCode(200,"Successfully deleted from portfolio");
             }else{
                 return BadRequest("Film not in your portfolio");
             }

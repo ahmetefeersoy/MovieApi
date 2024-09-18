@@ -15,7 +15,6 @@ namespace api.Interfaces
         Task<Films> CreateAsync(Films filmModel);
         Task<Films?> UpdateAsync(int id , UpdateFilmRequestDto filmDto);
         Task<Films?> DeleteAsync(int id);
-
         Task<bool> FilmExists(int id);
     }
 }
