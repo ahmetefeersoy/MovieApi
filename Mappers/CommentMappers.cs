@@ -14,6 +14,7 @@ namespace api.Mappers
             return new CommentDto{
                 Id = commentModel.Id,
                 StarRating = commentModel.StarRating,
+                NumberOfLikes = commentModel.NumberOfLikes,
                 Content = commentModel.Content ?? string.Empty, // Null kontrolü
                 CreatedOn = commentModel.CreatedOn,
                 CreatedBy = commentModel.AppUser?.UserName ?? "Unknown", // Null kontrolü

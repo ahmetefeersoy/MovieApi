@@ -11,6 +11,8 @@ namespace api.Dtos.Comment
 
         public string Content { get; set; } = string.Empty;
 
+        public int NumberOfLikes { get; set; }
+
         public int StarRating { get; set; }
 
         public DateTime CreatedOn { get; set; } = DateTime.Now;
